@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.gui.tools.lsfs</groupId>
+        <groupId>org.gui.tools.lsfs</groupId>
         <artifactId>lsfs</artifactId>
         <version>0.0.1-ALPHA</version>
     </parent>
