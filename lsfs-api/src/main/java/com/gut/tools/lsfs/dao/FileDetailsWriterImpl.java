@@ -3,17 +3,22 @@ package com.gut.tools.lsfs.dao;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gut.tools.lsfs.model.FileMetadata;
 import lombok.RequiredArgsConstructor;
+import lombok.Synchronized;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 @Slf4j
 @Component
 @RequiredArgsConstructor
 public class FileDetailsWriterImpl implements FileDetailsWriter {
+
+    private final static String JSON = ".json";
 
     private final ObjectMapper objectMapper;
 
@@ -21,13 +26,13 @@ public class FileDetailsWriterImpl implements FileDetailsWriter {
     private String rootPath;
 
     @Override
-    public void saveDetails(FileMetadata fileMetadata) {
+    public void saveDetails(FileMetadata fileMetadata) throws IOException {
         String id = fileMetadata.getUuid();
 
-        File file = new File(rootPath + id + ".json");
+        File file = new File(rootPath + id + JSON);
 
         if(file.exists()) {
-            file.delete();
+            Files.delete(file.toPath());
         }
 
         try {
@@ -39,7 +44,7 @@ public class FileDetailsWriterImpl implements FileDetailsWriter {
 
     @Override
     public FileMetadata getByUUID(String uuid) {
-        File file = new File(rootPath + uuid + ".json");
+        File file = new File(rootPath + uuid + JSON);
 
         if(file.exists()) {
             try {
@@ -52,5 +57,11 @@ public class FileDetailsWriterImpl implements FileDetailsWriter {
         } else {
             return null;
         }
+    }
+
+    @Override
+    @Synchronized
+    public void delete(String uuid) throws IOException {
+        Files.delete(Path.of(rootPath + uuid + JSON));
     }
 }

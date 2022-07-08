@@ -9,4 +9,6 @@ public interface FileService {
     String save(MultipartFile file) throws IOException;
 
     File getFileByUUID(String uuid);
+
+    void delete(String uuid);
 }

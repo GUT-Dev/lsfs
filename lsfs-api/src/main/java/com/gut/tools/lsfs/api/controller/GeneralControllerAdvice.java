@@ -1,4 +1,4 @@
-package com.gut.tools.lsfs.api.Controller;
+package com.gut.tools.lsfs.api.controller;
 
 import com.gut.tools.lsfs.exceptions.LSFSException;
 import com.gut.tools.lsfs.exceptions.LSFSStorageException;

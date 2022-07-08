@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.UUID;
 
@@ -51,9 +52,8 @@ public class FileWriterImpl implements FileWriter {
 
     @Override
     @Synchronized
-    public void delete(String id) {
-        File file = get(id);
-        file.delete();
+    public void delete(String uuid) throws IOException {
+        Files.delete(Path.of(rootPath + uuid));
     }
 
     @Override

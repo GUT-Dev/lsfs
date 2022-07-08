@@ -1,4 +1,4 @@
-package com.gut.tools.lsfs.api.Controller;
+package com.gut.tools.lsfs.api.controller;
 
 import com.gut.tools.lsfs.service.FileService;
 import lombok.RequiredArgsConstructor;
@@ -8,7 +8,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -36,5 +35,10 @@ public class FileLoaderController {
     @PostMapping
     public String loadFile(@RequestBody MultipartFile file) throws IOException {
         return fileService.save(file);
+    }
+
+    @DeleteMapping
+    public void delete(@RequestParam String uuid) {
+        fileService.delete(uuid);
     }
 }

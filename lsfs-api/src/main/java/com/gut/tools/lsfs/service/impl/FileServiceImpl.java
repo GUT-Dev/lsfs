@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -64,5 +65,21 @@ public class FileServiceImpl implements FileService {
         }
 
         return null;
+    }
+
+    @Override
+    public void delete(String uuid) {
+        try {
+            fileWriter.delete(uuid);
+            fileDetailsWriter.delete(uuid);
+
+            // TODO: remove after add cache cleaner
+            File file = new File(rootPath + uuid);
+            if(file.exists()) {
+                Files.delete(file.toPath());
+            }
+        } catch (IOException e) {
+            throw new LSFSStorageException("Couldn't delete file with uuid: [" + uuid + "]");
+        }
     }
 }

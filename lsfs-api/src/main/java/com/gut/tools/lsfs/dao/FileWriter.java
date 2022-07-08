@@ -11,7 +11,7 @@ public interface FileWriter {
 
     String save(MultipartFile multipartFile) throws IOException;
 
-    void delete(String id);
+    void delete(String id) throws IOException;
 
     boolean existsById(String id);
 }
