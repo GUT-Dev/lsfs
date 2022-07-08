@@ -4,17 +4,18 @@ import com.gui.tools.lsfs.exceptions.FileAlreadyExistsException;
 import com.gui.tools.lsfs.exceptions.FileDoesNotExitsException;
 import lombok.Synchronized;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.UUID;
 
 @Component
 public class FileWriterImpl implements FileWriter {
 
     //TODO: move to general config
-    private static final String ROOT_PATH = "data/files/";
+    private static final String ROOT_PATH = "lsfs-api/data/files/";
 
     @Override
     @Synchronized
@@ -30,20 +31,20 @@ public class FileWriterImpl implements FileWriter {
 
     @Override
     @Synchronized
-    public String save(FileInputStream fileInputStream) {
+    public String save(MultipartFile multipartFile) {
         final UUID uuid = UUID.randomUUID();
         File file = new File(ROOT_PATH + uuid);
 
         if (!file.exists()) {
-
-            try (java.io.FileWriter writer = new java.io.FileWriter(file)) {
-//                writer.write();
+            try {
+                Files.copy(multipartFile.getInputStream(), Paths.get(file.getPath()));
             } catch (IOException e) {
                 e.printStackTrace();
             }
         } else {
             throw new FileAlreadyExistsException();
         }
+        return file.getName();
     }
 
     @Override
