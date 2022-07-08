@@ -1,10 +1,9 @@
-package com.gui.tools.lsfs.dao;
+package com.gut.tools.lsfs.dao;
 
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 
 public interface FileWriter {
 

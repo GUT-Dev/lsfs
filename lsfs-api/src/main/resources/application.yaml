@@ -1,2 +1,9 @@
 server:
   port: 8090
+
+# TODO: move them to configurations.yaml
+path:
+  root: "lsfs-api/data/"
+  files: "lsfs-api/data/files/"
+  temp: "lsfs-api/data/temp/"
+  meta: "lsfs-api/data/meta/"

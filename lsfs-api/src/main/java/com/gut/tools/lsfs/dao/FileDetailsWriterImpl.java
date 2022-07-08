@@ -1,9 +1,10 @@
-package com.gui.tools.lsfs.dao;
+package com.gut.tools.lsfs.dao;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gui.tools.lsfs.model.FileMetadata;
+import com.gut.tools.lsfs.model.FileMetadata;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -16,14 +17,14 @@ public class FileDetailsWriterImpl implements FileDetailsWriter {
 
     private final ObjectMapper objectMapper;
 
-    //TODO: move to general config
-    private static final String ROOT_PATH = "lsfs-api/data/meta/";
+    @Value("${path.meta}")
+    private String rootPath;
 
     @Override
     public void saveDetails(FileMetadata fileMetadata) {
         String id = fileMetadata.getUuid();
 
-        File file = new File(ROOT_PATH + id + ".json");
+        File file = new File(rootPath + id + ".json");
 
         if(file.exists()) {
             file.delete();
@@ -38,7 +39,7 @@ public class FileDetailsWriterImpl implements FileDetailsWriter {
 
     @Override
     public FileMetadata getByUUID(String uuid) {
-        File file = new File(ROOT_PATH + uuid + ".json");
+        File file = new File(rootPath + uuid + ".json");
 
         if(file.exists()) {
             try {

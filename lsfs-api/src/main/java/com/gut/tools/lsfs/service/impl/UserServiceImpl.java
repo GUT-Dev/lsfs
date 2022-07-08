@@ -1,7 +1,7 @@
-package com.gui.tools.lsfs.service.impl;
+package com.gut.tools.lsfs.service.impl;
 
-import com.gui.tools.lsfs.model.User;
-import com.gui.tools.lsfs.service.UserService;
+import com.gut.tools.lsfs.model.User;
+import com.gut.tools.lsfs.service.UserService;
 import org.springframework.stereotype.Service;
 
 @Service

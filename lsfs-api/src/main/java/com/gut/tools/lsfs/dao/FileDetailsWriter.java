@@ -1,6 +1,6 @@
-package com.gui.tools.lsfs.dao;
+package com.gut.tools.lsfs.dao;
 
-import com.gui.tools.lsfs.model.FileMetadata;
+import com.gut.tools.lsfs.model.FileMetadata;
 
 public interface FileDetailsWriter {
 

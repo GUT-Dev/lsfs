@@ -1,4 +1,4 @@
-package com.gui.tools.lsfs.util;
+package com.gut.tools.lsfs.util;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

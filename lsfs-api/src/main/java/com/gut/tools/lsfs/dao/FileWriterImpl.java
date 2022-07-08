@@ -1,8 +1,9 @@
-package com.gui.tools.lsfs.dao;
+package com.gut.tools.lsfs.dao;
 
-import com.gui.tools.lsfs.exceptions.FileAlreadyExistsException;
-import com.gui.tools.lsfs.exceptions.FileDoesNotExitsException;
+import com.gut.tools.lsfs.exceptions.LSFSException;
+import com.gut.tools.lsfs.exceptions.LSFSStorageException;
 import lombok.Synchronized;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -14,18 +15,19 @@ import java.util.UUID;
 @Component
 public class FileWriterImpl implements FileWriter {
 
-    //TODO: move to general config
-    private static final String ROOT_PATH = "lsfs-api/data/files/";
+    @Value("${path.files}")
+    private String rootPath;
 
     @Override
     @Synchronized
-    public File get(String id) {
-        File file = new File(ROOT_PATH + id);
+    public File get(String uuid) {
+        File file = new File(rootPath + uuid);
+
 
         if (file.exists()) {
             return file;
         } else {
-            throw new FileDoesNotExitsException("Couldn't found file with id: " + id);
+            throw new LSFSStorageException("Couldn't found file with UUID: " + uuid);
         }
     }
 
@@ -33,7 +35,7 @@ public class FileWriterImpl implements FileWriter {
     @Synchronized
     public String save(MultipartFile multipartFile) {
         final UUID uuid = UUID.randomUUID();
-        File file = new File(ROOT_PATH + uuid);
+        File file = new File(rootPath + uuid);
 
         if (!file.exists()) {
             try {
@@ -42,7 +44,7 @@ public class FileWriterImpl implements FileWriter {
                 e.printStackTrace();
             }
         } else {
-            throw new FileAlreadyExistsException();
+            throw new LSFSException("File with UUID: [" + uuid + "] already exists");
         }
         return file.getName();
     }
@@ -57,7 +59,7 @@ public class FileWriterImpl implements FileWriter {
     @Override
     @Synchronized
     public boolean existsById(String id) {
-        File file = new File(ROOT_PATH + id);
+        File file = new File(rootPath + id);
         return file.exists();
     }
 }

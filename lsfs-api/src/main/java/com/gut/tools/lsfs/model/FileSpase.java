@@ -1,4 +1,4 @@
-package com.gui.tools.lsfs.model;
+package com.gut.tools.lsfs.model;
 
 import lombok.*;
 
