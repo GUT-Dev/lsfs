@@ -1,6 +1,7 @@
 package com.gut.tools.lsfs.api.controller;
 
 import com.gut.tools.lsfs.service.FileService;
+import com.gut.tools.lsfs.util.CleanupInputStreamResource;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
@@ -23,7 +24,7 @@ public class FileLoaderController {
     public ResponseEntity<Resource> getByUUID(@RequestParam String uuid) throws IOException {
         File file = fileService.getFileByUUID(uuid);
 
-        InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
+        InputStreamResource resource = new CleanupInputStreamResource(file);
         MediaType mediaType = MediaType.parseMediaType(Files.probeContentType(file.toPath()));
 
         return ResponseEntity.ok()
