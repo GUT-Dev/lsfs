@@ -2,6 +2,9 @@ package com.gut.tools.lsfs.dao;
 
 import com.gut.tools.lsfs.exceptions.LSFSException;
 import com.gut.tools.lsfs.exceptions.LSFSStorageException;
+import com.gut.tools.lsfs.model.FileMetadata;
+import com.gut.tools.lsfs.util.Compressor;
+import lombok.RequiredArgsConstructor;
 import lombok.Synchronized;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -14,16 +17,24 @@ import java.nio.file.Paths;
 import java.util.UUID;
 
 @Component
+@RequiredArgsConstructor
 public class FileWriterImpl implements FileWriter {
 
     @Value("${path.files}")
     private String rootPath;
 
+    private final FileDetailsWriter fileDetailsWriter;
+
     @Override
     @Synchronized
-    public File get(String uuid) {
+    public File get(String uuid, FileMetadata fileMetadata) throws IOException {
         File file = new File(rootPath + uuid);
 
+        if(fileMetadata.isArchived()) {
+            Compressor.unZip(new File(file.getPath() + ".zip"));
+            fileMetadata.setArchived(false);
+            fileDetailsWriter.saveDetails(fileMetadata);
+        }
 
         if (file.exists()) {
             return file;

@@ -8,7 +8,7 @@ import java.io.IOException;
 public interface FileService {
     String save(MultipartFile file) throws IOException;
 
-    File getFileByUUID(String uuid);
+    File getFileByUUID(String uuid) throws IOException;
 
     void delete(String uuid);
 }

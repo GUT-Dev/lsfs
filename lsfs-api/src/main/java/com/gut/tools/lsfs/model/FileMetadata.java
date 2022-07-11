@@ -24,8 +24,13 @@ public class FileMetadata implements Serializable {
 
     private Long size;
 
-    private String hashSum;
+    private boolean archived;
+
+    private Long hashSum;
 
     @JsonSerialize(using = LocalDateTimeSerializer.class)
-    private LocalDateTime createdDate;
+    private LocalDateTime loadDate;
+
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    private LocalDateTime lastReadDate;
 }

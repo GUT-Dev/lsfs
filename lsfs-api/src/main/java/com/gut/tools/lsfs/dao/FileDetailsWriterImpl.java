@@ -18,7 +18,7 @@ import java.nio.file.Path;
 @RequiredArgsConstructor
 public class FileDetailsWriterImpl implements FileDetailsWriter {
 
-    private final static String JSON = ".json";
+    private static final String JSON = ".json";
 
     private final ObjectMapper objectMapper;
 
