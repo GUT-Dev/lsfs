@@ -1,5 +1,6 @@
-package com.gut.tools.lsfs.model;
+package com.gut.tools.lsfs.model.user;
 
+import com.gut.tools.lsfs.model.file.FileSpase;
 import lombok.*;
 
 import java.io.Serializable;

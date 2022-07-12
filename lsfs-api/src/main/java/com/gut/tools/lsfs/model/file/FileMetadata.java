@@ -1,4 +1,4 @@
-package com.gut.tools.lsfs.model;
+package com.gut.tools.lsfs.model.file;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;

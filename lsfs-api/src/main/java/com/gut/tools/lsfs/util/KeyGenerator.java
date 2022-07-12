@@ -1,6 +1,6 @@
 package com.gut.tools.lsfs.util;
 
-import com.gut.tools.lsfs.model.User;
+import com.gut.tools.lsfs.model.user.User;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 

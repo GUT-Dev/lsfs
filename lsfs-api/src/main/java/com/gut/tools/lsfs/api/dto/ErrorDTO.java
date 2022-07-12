@@ -1,4 +1,4 @@
-package com.gut.tools.lsfs.model;
+package com.gut.tools.lsfs.api.dto;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Jacksonized
-public class ErrorModel {
+public class ErrorDTO {
     private LocalDateTime time;
     private String message;
 }

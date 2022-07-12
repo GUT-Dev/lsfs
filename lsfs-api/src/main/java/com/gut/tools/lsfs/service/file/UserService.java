@@ -1,6 +1,6 @@
-package com.gut.tools.lsfs.service;
+package com.gut.tools.lsfs.service.file;
 
-import com.gut.tools.lsfs.model.User;
+import com.gut.tools.lsfs.model.user.User;
 
 public interface UserService {
 

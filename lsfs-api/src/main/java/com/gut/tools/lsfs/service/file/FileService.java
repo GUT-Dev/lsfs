@@ -1,6 +1,6 @@
-package com.gut.tools.lsfs.service;
+package com.gut.tools.lsfs.service.file;
 
-import com.gut.tools.lsfs.model.FileMetadata;
+import com.gut.tools.lsfs.model.file.FileMetadata;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;

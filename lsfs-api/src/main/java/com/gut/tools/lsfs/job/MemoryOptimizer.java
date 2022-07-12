@@ -1,7 +1,7 @@
 package com.gut.tools.lsfs.job;
 
 import com.gut.tools.lsfs.dao.file.FileMetadataDAO;
-import com.gut.tools.lsfs.model.FileMetadata;
+import com.gut.tools.lsfs.model.file.FileMetadata;
 import com.gut.tools.lsfs.util.Compressor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

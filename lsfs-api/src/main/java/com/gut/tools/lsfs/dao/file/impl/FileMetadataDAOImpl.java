@@ -2,7 +2,7 @@ package com.gut.tools.lsfs.dao.file.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gut.tools.lsfs.dao.file.FileMetadataDAO;
-import com.gut.tools.lsfs.model.FileMetadata;
+import com.gut.tools.lsfs.model.file.FileMetadata;
 import lombok.RequiredArgsConstructor;
 import lombok.Synchronized;
 import lombok.extern.slf4j.Slf4j;

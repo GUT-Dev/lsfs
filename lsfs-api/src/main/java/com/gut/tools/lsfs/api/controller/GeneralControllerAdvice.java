@@ -2,7 +2,7 @@ package com.gut.tools.lsfs.api.controller;
 
 import com.gut.tools.lsfs.exceptions.LSFSException;
 import com.gut.tools.lsfs.exceptions.LSFSStorageException;
-import com.gut.tools.lsfs.model.ErrorModel;
+import com.gut.tools.lsfs.api.dto.ErrorDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -15,8 +15,8 @@ import java.time.LocalDateTime;
 public class GeneralControllerAdvice extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler({ LSFSException.class, LSFSStorageException.class })
-    public ResponseEntity<ErrorModel> handleLSFSException(LSFSException ex) {
-        ErrorModel err = new ErrorModel();
+    public ResponseEntity<ErrorDTO> handleLSFSException(LSFSException ex) {
+        ErrorDTO err = new ErrorDTO();
         err.setTime(LocalDateTime.now());
         err.setMessage(ex.getMessage());
 

@@ -2,7 +2,7 @@ package com.gut.tools.lsfs.api.controller;
 
 import com.gut.tools.lsfs.api.dto.FileMetadataDTO;
 import com.gut.tools.lsfs.api.mapper.FileMetadataMapper;
-import com.gut.tools.lsfs.service.FileService;
+import com.gut.tools.lsfs.service.file.FileService;
 import com.gut.tools.lsfs.util.CleanupInputStreamResource;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.InputStreamResource;

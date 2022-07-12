@@ -1,10 +1,10 @@
-package com.gut.tools.lsfs.service.impl;
+package com.gut.tools.lsfs.service.file.impl;
 
 import com.gut.tools.lsfs.dao.file.FileMetadataDAO;
 import com.gut.tools.lsfs.dao.file.FileDAO;
 import com.gut.tools.lsfs.exceptions.LSFSStorageException;
-import com.gut.tools.lsfs.model.FileMetadata;
-import com.gut.tools.lsfs.service.FileService;
+import com.gut.tools.lsfs.model.file.FileMetadata;
+import com.gut.tools.lsfs.service.file.FileService;
 import com.gut.tools.lsfs.util.Compressor;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FileUtils;

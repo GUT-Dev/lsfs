@@ -1,5 +1,6 @@
-package com.gut.tools.lsfs.model;
+package com.gut.tools.lsfs.model.file;
 
+import com.gut.tools.lsfs.model.file.FileMetadata;
 import lombok.*;
 
 import java.io.Serializable;
