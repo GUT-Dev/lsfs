@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -97,5 +98,10 @@ public class FileServiceImpl implements FileService {
         } catch (IOException e) {
             throw new LSFSStorageException("Couldn't delete file with uuid: [" + uuid + "]");
         }
+    }
+
+    @Override
+    public List<FileMetadata> findAll() {
+        return fileMetadataDAO.findAll();
     }
 }

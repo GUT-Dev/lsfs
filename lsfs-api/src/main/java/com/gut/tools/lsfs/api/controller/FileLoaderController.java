@@ -1,5 +1,7 @@
 package com.gut.tools.lsfs.api.controller;
 
+import com.gut.tools.lsfs.api.dto.FileMetadataDTO;
+import com.gut.tools.lsfs.api.mapper.FileMetadataMapper;
 import com.gut.tools.lsfs.service.FileService;
 import com.gut.tools.lsfs.util.CleanupInputStreamResource;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 import java.nio.file.Files;
+import java.util.List;
 
 @RestController
 @RequestMapping("lsfs-api/file")
@@ -19,6 +22,7 @@ import java.nio.file.Files;
 public class FileLoaderController {
 
     private final FileService fileService;
+    private final FileMetadataMapper fileMetadataMapper;
 
     @GetMapping
     public ResponseEntity<Resource> getByUUID(@RequestParam String uuid) throws IOException {
@@ -41,5 +45,12 @@ public class FileLoaderController {
     @DeleteMapping
     public void delete(@RequestParam String uuid) {
         fileService.delete(uuid);
+    }
+
+    @GetMapping("/details/all")
+    public List<FileMetadataDTO> findAllFileDetails() {
+        return fileService.findAll().stream()
+                .map(fileMetadataMapper::toDto)
+                .toList();
     }
 }

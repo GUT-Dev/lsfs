@@ -19,6 +19,7 @@
         <maven.compiler.target>17</maven.compiler.target>
         <spring.boot.version>2.7.0</spring.boot.version>
         <lombok.version>1.18.24</lombok.version>
+        <org.mapstruct.version>1.5.2.Final</org.mapstruct.version>
     </properties>
 
     <dependencies>
@@ -44,15 +45,15 @@
             <artifactId>commons-io</artifactId>
             <version>2.11.0</version>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>com.fasterxml.jackson.datatype</groupId>-->
-<!--            <artifactId>jackson-datatype-jdk8</artifactId>-->
-<!--            <version>2.13.3</version>-->
-<!--        </dependency>-->
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
             <version>2.13.3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+            <version>${org.mapstruct.version}</version>
         </dependency>
     </dependencies>
 
@@ -71,7 +72,17 @@
                             <artifactId>lombok</artifactId>
                             <version>${lombok.version}</version>
                         </path>
+                        <path>
+                            <groupId>org.mapstruct</groupId>
+                            <artifactId>mapstruct-processor</artifactId>
+                            <version>${org.mapstruct.version}</version>
+                        </path>
                     </annotationProcessorPaths>
+                    <compilerArgs>
+                        <compilerArg>
+                            -Amapstruct.defaultComponentModel=spring
+                        </compilerArg>
+                    </compilerArgs>
                 </configuration>
             </plugin>
             <plugin>
