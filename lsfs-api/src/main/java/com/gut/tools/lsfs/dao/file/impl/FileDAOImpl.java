@@ -1,11 +1,10 @@
-package com.gut.tools.lsfs.dao;
+package com.gut.tools.lsfs.dao.file.impl;
 
+import com.gut.tools.lsfs.dao.file.FileDAO;
 import com.gut.tools.lsfs.exceptions.LSFSException;
-import com.gut.tools.lsfs.exceptions.LSFSStorageException;
-import com.gut.tools.lsfs.model.FileMetadata;
-import com.gut.tools.lsfs.util.Compressor;
 import lombok.RequiredArgsConstructor;
 import lombok.Synchronized;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,33 +13,35 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
-public class FileWriterImpl implements FileWriter {
+public class FileDAOImpl implements FileDAO {
 
     @Value("${path.files}")
     private String rootPath;
 
-    private final FileDetailsWriter fileDetailsWriter;
-
-    @Override
     @Synchronized
-    public File get(String uuid, FileMetadata fileMetadata) throws IOException {
+    public File getById(String uuid) {
         File file = new File(rootPath + uuid);
-
-        if(fileMetadata.isArchived()) {
-            Compressor.unZip(new File(file.getPath() + ".zip"));
-            fileMetadata.setArchived(false);
-            fileDetailsWriter.saveDetails(fileMetadata);
-        }
 
         if (file.exists()) {
             return file;
         } else {
-            throw new LSFSStorageException("Couldn't found file with UUID: " + uuid);
+            log.warn("Couldn't found file with UUID: " + uuid);
+            return null;
         }
+    }
+
+    @Override
+    public List<File> findAll() {
+        final File rootDir = new File(rootPath);
+        return Arrays.stream(Objects.requireNonNull(rootDir.listFiles())).toList();
     }
 
     @Override
@@ -63,8 +64,12 @@ public class FileWriterImpl implements FileWriter {
 
     @Override
     @Synchronized
-    public void delete(String uuid) throws IOException {
-        Files.delete(Path.of(rootPath + uuid));
+    public void deleteById(String uuid) {
+        try {
+            Files.delete(Path.of(rootPath + uuid));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

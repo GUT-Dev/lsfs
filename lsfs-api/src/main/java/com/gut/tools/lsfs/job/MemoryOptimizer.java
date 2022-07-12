@@ -1,6 +1,6 @@
 package com.gut.tools.lsfs.job;
 
-import com.gut.tools.lsfs.dao.FileDetailsWriter;
+import com.gut.tools.lsfs.dao.file.FileMetadataDAO;
 import com.gut.tools.lsfs.model.FileMetadata;
 import com.gut.tools.lsfs.util.Compressor;
 import lombok.RequiredArgsConstructor;
@@ -32,23 +32,23 @@ public class MemoryOptimizer {
     @Value("${path.meta}")
     private File metaDataDirPath;
 
-    private final FileDetailsWriter fileDetailsWriter;
+    private final FileMetadataDAO fileMetadataDAO;
 
     @Scheduled(initialDelay = INIT_DELAY_TIMESTAMP, fixedRate = RATE_DURATION_TIMESTAMP)
-    public void zipFiles() throws IOException {
+    public void zipFiles() {
         long startExecutionTime = System.currentTimeMillis();
         int archivedFilesCount = 0;
 
         log.info("Optimizing file storage");
         for (File file : Objects.requireNonNull(metaDataDirPath.listFiles())) {
 
-            FileMetadata fileMetadata = fileDetailsWriter.getByUUID(file.getName().substring(0, file.getName().lastIndexOf(".")));
+            FileMetadata fileMetadata = fileMetadataDAO.getById(file.getName().substring(0, file.getName().lastIndexOf(".")));
 
             if(!fileMetadata.isArchived() && isOld(startExecutionTime, fileMetadata)) {
                 Compressor.toZip(new File(filesDirPath + "\\" + fileMetadata.getUuid()));
 
                 fileMetadata.setArchived(true);
-                fileDetailsWriter.saveDetails(fileMetadata);
+                fileMetadataDAO.save(fileMetadata);
 
                 archivedFilesCount++;
             }

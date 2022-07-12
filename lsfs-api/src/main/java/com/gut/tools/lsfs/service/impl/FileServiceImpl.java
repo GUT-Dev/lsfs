@@ -1,7 +1,7 @@
 package com.gut.tools.lsfs.service.impl;
 
-import com.gut.tools.lsfs.dao.FileDetailsWriter;
-import com.gut.tools.lsfs.dao.FileWriter;
+import com.gut.tools.lsfs.dao.file.FileMetadataDAO;
+import com.gut.tools.lsfs.dao.file.FileDAO;
 import com.gut.tools.lsfs.exceptions.LSFSStorageException;
 import com.gut.tools.lsfs.model.FileMetadata;
 import com.gut.tools.lsfs.service.FileService;
@@ -28,8 +28,8 @@ public class FileServiceImpl implements FileService {
     @Value("${path.files}")
     private String filesDirPath;
 
-    private final FileWriter fileWriter;
-    private final FileDetailsWriter fileDetailsWriter;
+    private final FileDAO fileDAO;
+    private final FileMetadataDAO fileMetadataDAO;
 
     public String save(MultipartFile file) throws IOException {
         final String fileName = file.getResource().getFilename();
@@ -44,20 +44,26 @@ public class FileServiceImpl implements FileService {
         fileMetadata.setLastReadDate(LocalDateTime.now());
         fileMetadata.setArchived(false);
 
-        String uuid = fileWriter.save(file);
+        String uuid = fileDAO.save(file);
 
         fileMetadata.setHashSum(FileUtils.checksumCRC32(new File(filesDirPath + uuid)));
         fileMetadata.setUuid(uuid);
 
-        fileDetailsWriter.saveDetails(fileMetadata);
+        fileMetadataDAO.save(fileMetadata);
 
         return uuid;
     }
 
-    public File getFileByUUID(String uuid) throws IOException {
-        FileMetadata fileMetadata = fileDetailsWriter.getByUUID(uuid);
+    public File getFileByUUID(String uuid) {
+        FileMetadata fileMetadata = fileMetadataDAO.getById(uuid);
 
-        File savedFile = fileWriter.get(uuid, fileMetadata);
+        if(fileMetadata.isArchived()) {
+            Compressor.unZip(new File(filesDirPath + uuid + ".zip"));
+            fileMetadata.setArchived(false);
+            fileMetadataDAO.save(fileMetadata);
+        }
+
+        File savedFile = fileDAO.getById(uuid);
 
         if(savedFile == null) {
             throw new LSFSStorageException("Couldn't found file with UUID: [" + uuid + "]");
@@ -68,7 +74,7 @@ public class FileServiceImpl implements FileService {
             FileUtils.copyFile(savedFile, file);
 
             fileMetadata.setLastReadDate(LocalDateTime.now());
-            fileDetailsWriter.saveDetails(fileMetadata);
+            fileMetadataDAO.save(fileMetadata);
 
             return file;
         } catch (IOException e) {
@@ -81,8 +87,8 @@ public class FileServiceImpl implements FileService {
     @Override
     public void delete(String uuid) {
         try {
-            fileWriter.delete(uuid);
-            fileDetailsWriter.delete(uuid);
+            fileDAO.deleteById(uuid);
+            fileMetadataDAO.deleteById(uuid);
 
             File file = new File(tempDirPath + uuid);
             if(file.exists()) {
