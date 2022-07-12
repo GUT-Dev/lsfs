@@ -66,7 +66,13 @@ public class FileDAOImpl implements FileDAO {
     @Synchronized
     public void deleteById(String uuid) {
         try {
-            Files.delete(Path.of(rootPath + uuid));
+            File file = new File(rootPath + uuid);
+
+            if(file.exists()) {
+                Files.delete(file.toPath());
+            } else {
+                Files.delete(Path.of(rootPath + uuid + ".zip"));
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
